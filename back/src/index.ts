@@ -1,22 +1,26 @@
 import cors from 'cors';
 import express from 'express';
+import { NextFunction, Request, Response } from 'express';
+import 'dotenv/config';
 import { ExceptionsHandler } from './middlewares/exceptions.handler';
 import { UnknownRoutesHandler } from './middlewares/unkownRoutes.handler';
+
+const PORT = process.env.PORT || 3001;
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-app.get('/', (req, res) => res.send('🏠'));
+app.get('/', (req: Request, res: Response): Response => res.send('🏠'));
 
 /**
- * Pour toutes les autres routes non définies, on retourne une erreur
+ * Returns 404 for all the unknown routes
  */
 app.all('*', UnknownRoutesHandler);
 app.use(ExceptionsHandler);
 
 /**
- * On demande à Express d'ecouter les requêtes sur le port défini dans la config
+ * App runing on port ${PORT}
  */
-app.listen(5000, () => console.log('Silence, ça tourne.'));
+app.listen(PORT, () => console.log('🚀 Server started on port', PORT));
