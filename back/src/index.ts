@@ -2,6 +2,8 @@ import cors from 'cors';
 import express from 'express';
 import { NextFunction, Request, Response } from 'express';
 import 'dotenv/config';
+
+import calculatorRouter from './routes/calculator';
 import { ExceptionsHandler } from './middlewares/exceptions.handler';
 import { UnknownRoutesHandler } from './middlewares/unkownRoutes.handler';
 
@@ -13,6 +15,7 @@ app.use(express.json());
 app.use(cors());
 
 app.get('/', (req: Request, res: Response): Response => res.send('🏠'));
+app.use('/calculator', calculatorRouter);
 
 /**
  * Returns 404 for all the unknown routes

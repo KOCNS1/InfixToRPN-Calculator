@@ -1,5 +1,6 @@
 import { do_add, do_sub, do_div, do_mul, do_mod } from '../operations';
-import { Ops } from '../../types/rpn';
+import { Ops, Prio } from '../../types/rpn';
+import { Exception } from '../exception';
 
 const ops: Ops = {
   '+': do_add,
@@ -26,9 +27,8 @@ export const calc_rpn = (expression: string): number => {
 
     // Token is operator
     else {
-      if (stack.length < 2) {
-        throw new Error('Insufficient values in expression.');
-      }
+      if (stack.length < 2)
+        throw new Exception('Insufficient values in expression.', 500);
 
       const op = ops[token];
       const a = stack.pop() as number;
@@ -37,14 +37,11 @@ export const calc_rpn = (expression: string): number => {
     }
   }
 
-  if (stack.length > 1) {
-    throw new Error('Inputted expression has too many values.');
-  }
+  if (stack.length > 1)
+    throw new Exception('Inputted expression has too many values.', 500);
 
   return stack.pop() as number;
 };
-
-type Prio = { [key: string]: number };
 
 const Priority: Prio = { '+': 1, '-': 1, '*': 2, '/': 2, '%': 2 };
 
@@ -76,7 +73,3 @@ export const infix_to_rpn = (expression: string): string => {
   }
   return output.join(' ');
 };
-
-console.log(infix_to_rpn('2 + 5 * 3 + 8 * 2'));
-
-console.log(calc_rpn('2 5 3 * + 8 2 * +'));

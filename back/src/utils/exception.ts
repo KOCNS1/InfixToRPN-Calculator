@@ -3,7 +3,7 @@ import { ApiException } from '../types/exceptions';
 /**
  * Main expection class
  */
-class Exception implements ApiException {
+export class Exception implements ApiException {
   constructor(readonly error: any, readonly status: number) {}
 }
 
