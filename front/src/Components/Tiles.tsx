@@ -35,6 +35,7 @@ const Tiles = ({ setResult, result }: TilesProps) => {
   const Ops = ['%', '/', 'x', '−', '+'];
 
   const getResult = async () => {
+    console.log(result);
     try {
       const res = await fetch('http://localhost:3001/calculator', {
         method: 'POST',
@@ -44,13 +45,14 @@ const Tiles = ({ setResult, result }: TilesProps) => {
         } as unknown as Headers,
       });
       const data = await res.json();
-      return setResult(data.result);
+      setResult(data.result.toString());
     } catch (e) {
       console.log(e);
     }
   };
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log(result);
     const value = e.currentTarget.innerText;
     const trimmed = result.replace(/ /g, '');
 

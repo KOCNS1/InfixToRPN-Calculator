@@ -8,6 +8,7 @@ const ops: Ops = {
   '*': do_mul,
   '/': do_div,
   '%': do_mod,
+  x: do_mul,
 };
 
 /**
