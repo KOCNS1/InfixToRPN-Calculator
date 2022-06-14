@@ -32,7 +32,7 @@ const Tiles = ({ setResult, result }: TilesProps) => {
     '.',
   ];
 
-  const Ops = ['%', '/', 'x', '−', '+'];
+  const Ops = ['%', '/', 'x', '−', '+', '*', '-'];
 
   const getResult = async () => {
     console.log(result);
@@ -73,7 +73,7 @@ const Tiles = ({ setResult, result }: TilesProps) => {
       return setResult((previousVal: string) => previousVal + value);
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = (e: React.KeyboardEvent) => {
     const keys = [...tiles, '*', ',', 'Delete', 'Enter', '='];
     const value = e.key;
     const trimmed = result.replace(/ /g, '');
@@ -82,6 +82,12 @@ const Tiles = ({ setResult, result }: TilesProps) => {
 
     // Prevent double dot
     if (value === '.' && trimmed.slice(-1) === '.') return;
+
+    // Equals
+    if (value === 'Enter' || value === '=') {
+      getResult();
+      return;
+    }
 
     // Operators
     if (Ops.includes(value) && !Ops.includes(trimmed.slice(-1)))
@@ -95,12 +101,6 @@ const Tiles = ({ setResult, result }: TilesProps) => {
 
   useEventListener('keydown', (e) => handleKeyPress(e));
 
-  // useEffect(() => {
-  //   document.addEventListener('keypress', (e) => handleKeyPress(e));
-  //   return () => {
-  //     document.removeEventListener('keypress', (e) => handleKeyPress(e));
-  //   };
-  // }, []);
   return (
     <div
       onKeyDown={(e) => handleKeyPress(e)}
