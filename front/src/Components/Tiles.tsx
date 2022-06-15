@@ -1,8 +1,12 @@
-import React, { ReactEventHandler, useEffect } from 'react';
+import React, { ReactEventHandler, useContext, useEffect } from 'react';
+import { CalculatorContext } from '../Context/Calculator';
 import useEventListener from '../Hooks/useEventListener';
-import { TilesProps } from '../Types/Tiles';
+import { CalculatorContextType } from '../Types/Calculator';
 
-const Tiles = ({ setResult, result }: TilesProps) => {
+const Tiles = () => {
+  const { result, setResult, setCurrentOperation, history, setHistory } =
+    useContext(CalculatorContext) as CalculatorContextType;
+
   const tiles = [
     'C',
     '←',
@@ -35,6 +39,8 @@ const Tiles = ({ setResult, result }: TilesProps) => {
       });
       const data = await res.json();
       setResult(data.result.toString());
+      setCurrentOperation(result + ' =');
+      setHistory([...history, { infix: result, result: data.result }]);
     } catch (e) {
       console.log(e);
     }
