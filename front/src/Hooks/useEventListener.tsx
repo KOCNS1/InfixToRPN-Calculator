@@ -1,11 +1,5 @@
 import { ReactEventHandler, useEffect, useRef } from 'react';
 
-// type UseEventListenerProps = {
-//   eventName: string;
-//   handler: ReactEventHandler;
-//   element?: HTMLElement;
-// };
-
 export default function useEventListener(
   eventType: string,
   callback: ReactEventHandler,
