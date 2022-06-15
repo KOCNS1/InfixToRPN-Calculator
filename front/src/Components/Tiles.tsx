@@ -1,14 +1,6 @@
 import React, { ReactEventHandler, useEffect } from 'react';
 import useEventListener from '../Hooks/useEventListener';
-import useFetch from '../Hooks/useFetch';
-
-type Dispatch<A> = (value: A) => void;
-type SetStateAction<S> = S | ((prevState: S) => S);
-
-interface TilesProps {
-  result: string;
-  setResult: Dispatch<SetStateAction<string>>;
-}
+import { TilesProps } from '../Types/Tiles';
 
 const Tiles = ({ setResult, result }: TilesProps) => {
   const tiles = [
@@ -32,10 +24,7 @@ const Tiles = ({ setResult, result }: TilesProps) => {
     '.',
   ];
 
-  const Ops = ['%', '/', 'x', '−', '+', '*', '-'];
-
   const getResult = async () => {
-    console.log(result);
     try {
       const res = await fetch('http://localhost:3001/calculator', {
         method: 'POST',
@@ -51,61 +40,61 @@ const Tiles = ({ setResult, result }: TilesProps) => {
     }
   };
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(result);
-    const value = e.currentTarget.innerText;
+  const handleUseCases = (value: string) => {
     const trimmed = result.replace(/ /g, '');
+    const Ops = ['%', '/', 'x', '−', '+', '*', '-'];
 
-    // Clear, remove
-    if (result === '0' && value != 'C') return setResult(value);
-    else if (value === 'C') return setResult('0');
-    else if (value === '←')
-      return setResult((previousVal: string) => previousVal.slice(0, -1));
+    switch (true) {
+      case value === 'C' || value === 'c':
+        setResult('0');
+        break;
+      case value === 'Backspace' || value === '←':
+        setResult((previousVal: string) =>
+          previousVal.length <= 1 ? '0' : previousVal.slice(0, -1)
+        );
+        break;
 
-    // Prevent double dot
-    if (value === '.' && trimmed.slice(-1) === '.') return;
+      case (value === '.' || value === ',') && trimmed.slice(-1) === '.':
+        return;
 
-    // Operators
-    if (Ops.includes(value) && !Ops.includes(trimmed.slice(-1)))
-      return setResult((previousVal: string) => `${previousVal} ${value} `);
-    // Numbers
-    else if (!Ops.includes(value))
-      return setResult((previousVal: string) => previousVal + value);
+      case value === ',':
+        setResult((previousVal: string) => `${previousVal}.`);
+        break;
+
+      case value === 'Enter' || value === '=':
+        return getResult();
+
+      case Ops.includes(value) && !Ops.includes(trimmed.slice(-1)):
+        setResult((previousVal: string) => `${previousVal} ${value} `);
+        break;
+
+      case !Ops.includes(value):
+        setResult((previousVal: string) =>
+          previousVal === '0' ? value : previousVal + value
+        );
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const value = e.currentTarget.innerText;
+    handleUseCases(value);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    const keys = [...tiles, '*', ',', 'Delete', 'Enter', '='];
-    const value = e.key;
-    const trimmed = result.replace(/ /g, '');
+    const keys = [...tiles, '*', ',', 'Backspace', 'Enter', '=', 'c'];
+    const { key } = e;
 
-    if (!keys.includes(value)) return;
-
-    // Prevent double dot
-    if (value === '.' && trimmed.slice(-1) === '.') return;
-
-    // Equals
-    if (value === 'Enter' || value === '=') {
-      getResult();
-      return;
-    }
-
-    // Operators
-    if (Ops.includes(value) && !Ops.includes(trimmed.slice(-1)))
-      return setResult((previousVal: string) => `${previousVal} ${value} `);
-    // Numbers
-    else if (!Ops.includes(value))
-      return setResult((previousVal: string) =>
-        previousVal === '0' ? value : previousVal + value
-      );
+    if (!keys.includes(key)) return;
+    handleUseCases(key);
   };
 
-  useEventListener('keydown', (e) => handleKeyPress(e));
+  useEventListener('keydown', (e: React.KeyboardEvent) => handleKeyPress(e));
 
   return (
-    <div
-      onKeyDown={(e) => handleKeyPress(e)}
-      className="w-full bg-gradient-to-b from-indigo-400 to-indigo-500"
-    >
+    <div className="w-full bg-gradient-to-b from-indigo-400 to-indigo-500">
       <div className="flex w-full flex-wrap">
         {tiles.map((tile, index) => {
           return (
@@ -125,7 +114,7 @@ const Tiles = ({ setResult, result }: TilesProps) => {
         {/* Take the = sign out for styling purposes */}
         <div className="w-2/4 border-r border-indigo-400">
           <button
-            onClick={(e) => getResult()}
+            onClick={() => getResult()}
             className="w-full h-16 outline-none focus:outline-none bg-indigo-700 bg-opacity-30 hover:bg-opacity-40 text-white text-xl font-light"
           >
             =
