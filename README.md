@@ -1,6 +1,4 @@
-```yaml
-Google like calculator using RPN alorithm
-```
+# Google like calculator using RPN alorithm
 
 ---
 
@@ -28,24 +26,41 @@ Request Body:
 }
 ```
 
+Request Response:
+
+```json
+{
+  "Result": "4",
+  "Postfix": "2 2 +"
+}
+```
+
 #### To run the back
 
 ```bash
-cd back && npm start
+cd back && npm i &&  npm run dev
 ```
 
 #### To run the front
 
 ```bash
-cd front && npm start
+cd front && npm i && npm run dev
 ```
 
 #### To run via Docker
 
 ```bash
-docker
+docker-compose up --build
+# Server started on http://localhost:3001
+# Client started on http://localhost:3000/
 ```
 
-#### The front
+### To run the tests
+
+```bash
+cd back && npm run test
+```
+
+#### The front
 
 React app using Vite, TailwindCSS and React context
