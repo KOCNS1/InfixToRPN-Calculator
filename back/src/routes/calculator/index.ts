@@ -4,6 +4,11 @@ import { infix_to_rpn, calc_rpn } from '~/utils/rpn';
 
 const calculatorRouter = Router();
 
+/**
+ * @api {post} /calculator/rpn/ Calculate RPN
+ * @RequestBody {string} infix
+ * @RequestResponse { result, postfix }
+ */
 calculatorRouter.post(
   '/',
   (req: Request, res: Response, next: NextFunction) => {

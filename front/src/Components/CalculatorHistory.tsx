@@ -10,12 +10,12 @@ const CalculatorHistory = ({ open, setOpen }: OpenProps) => {
     <div
       className={
         open
-          ? 'absolute top-2 left-2 bg-gradient-to-b from-gray-800 to-gray-700 rounded-lg w-96 shadow-xl'
+          ? 'absolute top-2 left-2 bg-gradient-to-b from-gray-800 to-gray-700 rounded-lg w-96 shadow-xl border border-stone-500'
           : 'hidden'
       }
     >
       <div
-        className="h-14 w-full ml-3"
+        className="h-14 w-full ml-3 mt-2"
         onClick={() => setOpen((value) => !value)}
       >
         <svg

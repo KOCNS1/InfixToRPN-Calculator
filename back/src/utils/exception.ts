@@ -11,9 +11,6 @@ export class Exception implements ApiException {
  * Deals with the 404 error
  */
 export class NotFoundException extends Exception {
-  /**
-   * On appelle le `constructor` de la classe parente `Exception`
-   */
   constructor(error: any) {
     super(error, 404);
   }
@@ -23,9 +20,6 @@ export class NotFoundException extends Exception {
  * Deals with the 400 error
  */
 export class BadRequestException extends Exception {
-  /**
-   * On appelle le `constructor` de la classe parente `Exception`
-   */
   constructor(error: any) {
     super(error, 400);
   }

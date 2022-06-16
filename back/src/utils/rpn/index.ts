@@ -12,6 +12,7 @@ const ops: Ops = {
 };
 
 /**
+ * * Resolve the rpn expression
  * @param {string} expression
  * @returns {number}
  */
@@ -44,9 +45,13 @@ export const calc_rpn = (expression: string): number => {
   return stack.pop() as number;
 };
 
-const Priority: Prio = { '+': 1, '-': 1, '*': 2, '/': 2, '%': 2 };
+const Priority: Prio = { '+': 1, '-': 1, '*': 2, '/': 2, '%': 2, x: 2 };
 
-// Convet infix to RPN
+/**
+ * * Convert infix expression to RPN
+ * @param {string} expression
+ * @returns {string}
+ */
 export const infix_to_rpn = (expression: string): string => {
   const stack: string[] = [];
   const output: string[] = [];
