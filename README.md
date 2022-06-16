@@ -1,4 +1,4 @@
-# Google like calculator using RPN alorithm
+# Google like calculator using RPN algorithm
 
 ---
 
@@ -61,6 +61,6 @@ docker-compose up --build
 cd back && npm run test
 ```
 
-#### The front
+### The front
 
 React app using Vite, TailwindCSS and React context
